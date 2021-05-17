@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Edit a User</title>
+  <LINK href="style.css" rel="stylesheet" type="text/css">
+    <script src="edituser.js"></script>
+</head>
+
+<body>
+  <h1>Edit a user!</h1>
+		<p>|<a href="/index.html">Back</a>||<a href="/adminpanel.html">Admin Panel</a>|
+            |<a href="/dashboard.html">dashboard</a>||<a href="/logout.html">logout</a>|</p>
+  <form name="theForm" action="" onsubmit="return validateForm()" method="post">
+    username, (mandatory): <input type="text" name="username"></br>
+    password: <input type="text" name="password"></br>
+    First Name: <input type="text" name="firstname"></br>
+    Last Name: <input type="text" name="lastname"></br>
+    Email: <input type="text" name="email"></br>
+    telephone: <input type="text" name="telephone"></br>
+    Admin <input type="checkbox" name="admin" value="true"></br>
+    <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

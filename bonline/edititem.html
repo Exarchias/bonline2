@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>Edit an item</title>
+  <LINK href="style.css" rel="stylesheet" type="text/css">
+    <script src="edititem.js"></script>
+</head>
+
+<body>
+  <h1>Edit an Item!</h1>
+		<p>|<a href="/index.html">Back</a>||<a href="/adminpanel.html">Admin Panel</a>|
+            |<a href="/dashboard.html">dashboard</a>||<a href="/logout.html">logout</a>|</p>
+  <form name="theForm" action="" onsubmit="return validateForm()" method="post">
+    Title, (Mandatory): <input type="text" name="name"></br>
+    Description: <input type="text" name="description"></br>
+    Price: <input type="text" name="price"></br>
+    <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
