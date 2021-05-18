@@ -1374,7 +1374,8 @@ app.get('/data.txt', function(req, res) {
 //Public folder with static files
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-app.listen(8080);
+//app.listen(32764);
+app.listen(process.env.PORT || 3000);
 
 
 //================ MySQL Connection ===============================
