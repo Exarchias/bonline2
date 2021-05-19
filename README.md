@@ -1,3 +1,15 @@
-Bonline
-=======
-The idea is about a web page where people can buy clothes and accessories online. In now days, in the developed countriesare many web servicesandpages where peoplecan buy not only clothes but basically anything possible. Meanwhile in the developingcountries, this kind of way of onlineshopping, is still a new thing, which means that theproject idea ofour group, is notsomethingunique but it is somethingthat there isa market for it. The family of one of thegroup memberslivesin a developing country and own a selling clothes business, sothis project will not be just a school project but intendstobe used as a realcommercial productin the future.
+# secretBonline2HerokuTest
+it is not to be published or implemented. it is for Heroku testing.
+The link:
+https://bonline2secrettest.herokuapp.com
+
+
+It runs.
+Useful articles for debugging:
+https://dev.to/lawrence_eagles/causes-of-heroku-h10-app-crashed-error-and-how-to-solve-them-3jnl
+
+https://devcenter.heroku.com/articles/troubleshooting-node-deploys
+
+and
+
+https://stackoverflow.com/questions/42308879/how-to-solve-npm-error-npm-err-code-elifecycle
