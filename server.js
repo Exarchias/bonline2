@@ -86,7 +86,7 @@ function menuGenerator(pagename, req, res, pgloging, pgadmin, pgname){
             msg2 = msg2 + itemsDisplayGenerator();
         }
     } else {
-        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>|';
+        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
         msg2 = msg2 + '<br/>';
         msg2 = msg2 + itemsDisplayGenerator();
     }
@@ -1095,7 +1095,9 @@ app.get('/registration.html', function(req, res) {
     res.sendFile(path.join(__dirname + '/registration.html'));
 });
 
-
+app.get('/aboutus.html', function(req, res) {
+    res.sendFile(path.join(__dirname + '/aboutus.html'));
+});
 // ==================== POST REGISTRATION ==================================
 /*
 app.post('/registration',function(req,res){
