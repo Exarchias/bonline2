@@ -31,6 +31,8 @@ function pageGenerator(pagename, req, res, pgloging = false, pgadmin = false, pg
     msg1 = msg1 + "<h1>Welcome to the " + title + "</h1>";
     text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
+    text2 = footerGenerator();
+    msg1 = msg1 + text2;
     msg1 = msg1 + '</body></html>';
     return msg1;
 }
@@ -139,6 +141,19 @@ function itemsDisplayGenerator(){
     }
     msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
     return msg4;
+}
+
+//generates a display of the items, dynamically 
+function footerGenerator(){
+    msg5 = "<br/><div id='footer'>";
+    msg5 = msg5 + "Bonline team 2021 all rights reserved <br/>";
+    msg5 = msg5 + "LINKS<br/>";
+    msg5 = msg5 + "=====<br/>";
+    msg5 = msg5 + '|<a href="/aboutus.html">About us</a>||<a href="/contact.html">Contact us</a>||<a href="/qna.html">Q and A</a>|</br>';
+    msg5 = msg5 + '<a href="https://github.com/Exarchias/bonline2">The GitHub repository of this project</a></br>';
+    msg5 = msg5 + "=====<br/>";
+    msg5 = msg5 + "</div>";
+    return msg5;
 }
 
 //activate cookies in the system
