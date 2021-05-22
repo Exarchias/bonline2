@@ -148,10 +148,10 @@ function footerGenerator(){
     msg5 = "<br/><div id='footer'>";
     msg5 = msg5 + "Bonline team 2021 all rights reserved <br/>";
     msg5 = msg5 + "LINKS<br/>";
-    msg5 = msg5 + "=====<br/>";
+    msg5 = msg5 + "=================================================<br/>";
     msg5 = msg5 + '|<a href="/aboutus.html">About us</a>||<a href="/contact.html">Contact us</a>||<a href="/qna.html">Q and A</a>|</br>';
     msg5 = msg5 + '<a href="https://github.com/Exarchias/bonline2">The GitHub repository of this project</a></br>';
-    msg5 = msg5 + "=====<br/>";
+    msg5 = msg5 + "=================================================<br/>";
     msg5 = msg5 + "</div>";
     return msg5;
 }
