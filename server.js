@@ -27,7 +27,8 @@ function pageGenerator(pagename, req, res, pgloging = false, pgadmin = false, pg
     msg1 = msg1 + "<head>";
     msg1 = msg1 + "<title>Welcome to " + title + "</title>";
     msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
-    msg1 = msg1 + "</head>";
+    msg1 = msg1 + "</head><body>";
+    msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
     msg1 = msg1 + "<h1>Welcome to the " + title + "</h1>";
     text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
