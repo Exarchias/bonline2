@@ -4,6 +4,7 @@ var app = express();
 var bodyParser = require('body-parser'); //something about doing post
 var path = require('path');
 var mysql = require('mysql');
+fs = require('fs');
 const { time } = require('console');
 const { title } = require('process');
 //const { response } = require('express'); //bug from the IDE. when you see those burn them with fire
@@ -1459,5 +1460,49 @@ function register(dbcon, username, password, firstname, lastname, email, telepho
               console.log("1 record inserted");
             });
     }
+
+}
+
+app.get('/contact.html', function(req, res) {
+    res.sendFile(path.join(__dirname + '/contact.html'));
+});
+
+
+app.post('/contact.html',urlencodedParser,function(req,res){
+  
+
+    var useremail=req.body.email;
+    var usersubject=req.body.subject;
+    var usermessage=req.body.message;
+   // console.log(responsee);
+    writeToFiles(useremail,usersubject,usermessage);
+
+    msg = pageGenerator("index",req,res);
+   res.write(msg);
+});
+
+app.post('/contact',urlencodedParser,function(req,res){
+  
+
+   var useremail=req.body.email;
+   var usersubject=req.body.subject;
+   var usermessage=req.body.message;
+  // console.log(responsee);
+   writeToFiles(useremail,usersubject,usermessage);
+   //console.log(responsee);
+
+   msg = pageGenerator("index",req,res);
+  res.write(msg);
+});
+
+
+function writeToFiles(useremail,usersubject,usermessage){
+    pathofuser="questions/"+useremail+".txt";
+    content="The subject: "+usersubject+"  "+" Message: "+usermessage;
+
+    fs.writeFile(pathofuser, content, function (err) {
+        if (err) return console.log(err);
+        console.log('Message came from the user');
+      });
 
 }
