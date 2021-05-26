@@ -1506,3 +1506,8 @@ function writeToFiles(useremail,usersubject,usermessage){
       });
 
 }
+
+
+app.get('/qna.html', function(req, res) {
+    res.sendFile(path.join(__dirname + '/qna.html'));
+});
