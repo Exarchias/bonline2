@@ -5,6 +5,7 @@ var bodyParser = require('body-parser'); //something about doing post
 var path = require('path');
 var mysql = require('mysql');
 fs = require('fs');
+var nodemailer = require('nodemailer');
 const { time } = require('console');
 const { title } = require('process');
 //const { response } = require('express'); //bug from the IDE. when you see those burn them with fire
@@ -1476,6 +1477,7 @@ app.post('/contact.html',urlencodedParser,function(req,res){
     var usermessage=req.body.message;
    // console.log(responsee);
     writeToFiles(useremail,usersubject,usermessage);
+    sendMessagesRecivedFromClientsToAdmin(useremail,usersubject,usermessage);
 
     msg = pageGenerator("index",req,res);
    res.write(msg);
@@ -1490,7 +1492,7 @@ app.post('/contact',urlencodedParser,function(req,res){
   // console.log(responsee);
    writeToFiles(useremail,usersubject,usermessage);
    //console.log(responsee);
-
+   sendMessagesRecivedFromClientsToAdmin(useremail,usersubject,usermessage);
    msg = pageGenerator("index",req,res);
   res.write(msg);
 });
@@ -1511,3 +1513,32 @@ function writeToFiles(useremail,usersubject,usermessage){
 app.get('/qna.html', function(req, res) {
     res.sendFile(path.join(__dirname + '/qna.html'));
 });
+
+
+
+function sendMessagesRecivedFromClientsToAdmin(email,subject,message){
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'bonlinecloud@gmail.com',
+          pass: 'Bonline2021'
+        }
+      });
+
+
+      var mailOptions = {
+        from: 'bonlinecloud@gmail.com',
+        to: email,
+        subject: subject,
+        text: message
+      };
+
+      transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+}
