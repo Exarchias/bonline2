@@ -1477,8 +1477,8 @@ app.post('/contact.html',urlencodedParser,function(req,res){
     var usermessage=req.body.message;
    // console.log(responsee);
     writeToFiles(useremail,usersubject,usermessage);
-    sendMessagesRecivedFromClientsToAdmin(useremail,usersubject,usermessage);
-
+    var messageandemailaddressoftheuser="user email address that send the request: " +useremail +" The message: "+usermessage;
+    sendMessagesRecivedFromClientsToAdmin(usersubject,messageandemailaddressoftheuser);
     msg = pageGenerator("index",req,res);
    res.write(msg);
 });
@@ -1489,16 +1489,18 @@ app.post('/contact',urlencodedParser,function(req,res){
    var useremail=req.body.email;
    var usersubject=req.body.subject;
    var usermessage=req.body.message;
+
+   var messageandemailaddressoftheuser="user email address that send the request: " +useremail +" The message: "+usermessage;
   // console.log(responsee);
    writeToFiles(useremail,usersubject,usermessage);
    //console.log(responsee);
-   sendMessagesRecivedFromClientsToAdmin(useremail,usersubject,usermessage);
+   sendMessagesRecivedFromClientsToAdmin(usersubject,messageandemailaddressoftheuser);
    msg = pageGenerator("index",req,res);
   res.write(msg);
 });
 
 
-function writeToFiles(useremail,usersubject,usermessage){
+function writeToFiles(usersubject,useremail,usermessage){
     pathofuser="questions/"+useremail+".txt";
     content="The subject: "+usersubject+"  "+" Message: "+usermessage;
 
@@ -1516,7 +1518,7 @@ app.get('/qna.html', function(req, res) {
 
 
 
-function sendMessagesRecivedFromClientsToAdmin(email,subject,message){
+function sendMessagesRecivedFromClientsToAdmin(subject,message){
 
     var transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -1528,8 +1530,10 @@ function sendMessagesRecivedFromClientsToAdmin(email,subject,message){
 
 
       var mailOptions = {
+          
+
         from: 'bonlinecloud@gmail.com',
-        to: email,
+        to: 'lavdi-imeri@hotmail.com',
         subject: subject,
         text: message
       };
