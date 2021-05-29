@@ -4,7 +4,7 @@
     var phone= document.forms["contactform"]["phone"].value;
     var email= document.forms["contactform"]["email"].value;
     var subject= document.forms["contactform"]["subject"].value;
-    var message= document.forms["contactform"]["tmessage"].value;
+    var message= document.forms["contactform"]["message"].value;
 
 
     if (name == "") {

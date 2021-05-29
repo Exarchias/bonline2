@@ -1464,11 +1464,15 @@ function register(dbcon, username, password, firstname, lastname, email, telepho
 
 }
 
+//===================== CONTACT ======================================
+// ==================== GET CONTACT ==================================
+
 app.get('/contact.html', function(req, res) {
     res.sendFile(path.join(__dirname + '/contact.html'));
 });
 
 
+// ==================== GET CONTACT ==================================
 app.post('/contact.html',urlencodedParser,function(req,res){
   
 
@@ -1492,7 +1496,7 @@ app.post('/contact',urlencodedParser,function(req,res){
 
    var messageandemailaddressoftheuser="user email address that send the request: " +useremail +" The message: "+usermessage;
   // console.log(responsee);
-   writeToFiles(useremail,usersubject,usermessage);
+  writeToFiles(useremail,usersubject,usermessage);
    //console.log(responsee);
    sendMessagesRecivedFromClientsToAdmin(usersubject,messageandemailaddressoftheuser);
    msg = pageGenerator("index",req,res);
@@ -1531,7 +1535,7 @@ function sendMessagesRecivedFromClientsToAdmin(subject,message){
 
       var mailOptions = {
           
-
+        //lavdi-imeri@hotmail.com
         from: 'bonlinecloud@gmail.com',
         to: 'lavdi-imeri@hotmail.com',
         subject: subject,
@@ -1546,3 +1550,6 @@ function sendMessagesRecivedFromClientsToAdmin(subject,message){
         }
       });
 }
+
+//===================== CONTACT ENDS HERE ======================================
+

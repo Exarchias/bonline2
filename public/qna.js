@@ -11,7 +11,7 @@ function myFunction() {
     } else {
      //   alert("Here 2");
       document.getElementById("btn").innerHTML = "-";
-      document.getElementById("p").innerHTML = "Answer 1";
+      document.getElementById("p").innerHTML = "Answer: Nope. that is an university project and we study the technology";
       x.style.display = "block";
       
       
@@ -32,7 +32,7 @@ function myFunction() {
        
     } else {
         document.getElementById("btn1").innerHTML = "-";
-        document.getElementById("p1").innerHTML = "Answer 2";
+        document.getElementById("p1").innerHTML = "Answer: Yes. We believe it worth the effort to do so.";
       
     
       
@@ -53,7 +53,7 @@ function myFunction() {
        
     } else {
       document.getElementById("btn2").innerHTML = "+";
-      document.getElementById("p2").innerHTML = "Answer 3";
+      document.getElementById("p2").innerHTML = "Answer: Of course not. the prices and the products are arbitrary";
       z.style.display = "block";
       
     }
