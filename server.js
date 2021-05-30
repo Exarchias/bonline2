@@ -138,6 +138,7 @@ function itemsDisplayGenerator(){
         }
         msg4 = msg4 + "</table>";
     } else {
+        msg4 = msg4 + '<a href="/index.html"><img alt="enter to the store!" src="store.jpg" height="300"></a><br/>';
         msg4 = msg4 + "Items of tremendous quality!<br/>";
         msg4 = msg4 + "We have the Best prices and the best reviews.<br/>";
         msg4 = msg4 + "Click refresh to see our collection:<br/>";
