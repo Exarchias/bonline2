@@ -108,8 +108,9 @@ function usersDisplayGenerator(){
         var count = Object.keys(theUsers).length;
         for(x=0; x<count; x++){
             //console.log("Checking user:" + theUsers[x].username);
-            msg3 = msg3 + "<tr><td>" + x + "</td><td>" + theUsers[x].username + "</td><td>" 
-            + theUsers[x].email + "</td></tr>";
+            theUserUrl = userUrlGenerator(x);
+            msg3 = msg3 + '<tr><td><a href="' + theUserUrl + '">' + x + '</a></td><td><a href="' + theUserUrl + '">' + theUsers[x].username + '</a></td><td><a href="' + theUserUrl + '">' 
+            + theUsers[x].email + '</a></td></tr>';
         }
         msg3 = msg3 + "</table>";
     } else {
@@ -122,6 +123,12 @@ function usersDisplayGenerator(){
     return msg3;
 }
 
+//generates the link for the user page
+function userUrlGenerator(userNumber){
+    msg31 = "/thuser?num=" + userNumber;
+    return msg31;
+}
+
 //generates a display of the items, dynamically 
 function itemsDisplayGenerator(){
     loadItemsDb(dbcon);
@@ -132,9 +139,10 @@ function itemsDisplayGenerator(){
         msg4 = msg4 + "<table><tr><th>Ord.No</th><th>Title</th><th>Description</th><th>Price</th></tr>";
         for(x=0; x<count; x++){
             //console.log("Checking user:" + theUsers[x].username);
-            msg4 = msg4 + "<tr><td>" + x + "</td><td>" + theItems[x].name + "</td><td>" 
-            + theItems[x].description +  "</td><td>" 
-            + theItems[x].price + "</td></tr>";
+            theItemUrl = itemUrlGenerator(x);
+            msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
+            + theItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
+            + theItems[x].price + '</a></td></tr>';
         }
         msg4 = msg4 + "</table>";
     } else {
@@ -147,7 +155,13 @@ function itemsDisplayGenerator(){
     return msg4;
 }
 
-//generates a display of the items, dynamically 
+//generates the link for item's page
+function itemUrlGenerator(itemNumber){
+    msg41 = "/theitem?num=" + itemNumber;
+    return msg41;
+}
+
+//generates a footer, dynamically 
 function footerGenerator(){
     msg5 = "<br/><div id='footer'>";
     msg5 = msg5 + "Bonline team 2021 all rights reserved <br/>";
