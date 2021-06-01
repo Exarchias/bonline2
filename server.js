@@ -40,6 +40,52 @@ function pageGenerator(pagename, req, res, pgloging = false, pgadmin = false, pg
     return msg1;
 }
 
+//===================== Page Generation for an item ================================
+function pageGeneratorItem(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+    var title = "";
+    if(pagename == "index"){
+        title = "Bonline";
+    } else {
+        title = pagename;
+    }
+    msg1="";
+    msg1 = msg1 + "<head>";
+    msg1 = msg1 + "<title>The Item " + title + "</title>";
+    msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
+    msg1 = msg1 + "</head><body>";
+    msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
+    msg1 = msg1 + "<h1>Page of the Item #" + title + "</h1>";
+    text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
+    msg1 = msg1 + text1;
+    text2 = footerGenerator();
+    msg1 = msg1 + text2;
+    msg1 = msg1 + '</body></html>';
+    return msg1;
+}
+
+//===================== Page Generation for a user ================================
+function pageGeneratorUser(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+    var title = "";
+    if(pagename == "index"){
+        title = "Bonline";
+    } else {
+        title = pagename;
+    }
+    msg1="";
+    msg1 = msg1 + "<head>";
+    msg1 = msg1 + "<title>The User " + title + "</title>";
+    msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
+    msg1 = msg1 + "</head><body>";
+    msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
+    msg1 = msg1 + "<h1>Page of the user #" + title + "</h1>";
+    text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
+    msg1 = msg1 + text1;
+    text2 = footerGenerator();
+    msg1 = msg1 + text2;
+    msg1 = msg1 + '</body></html>';
+    return msg1;
+}
+
 //generates the links automatically.
 function menuGenerator(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
@@ -125,7 +171,7 @@ function usersDisplayGenerator(){
 
 //generates the link for the user page
 function userUrlGenerator(userNumber){
-    msg31 = "/thuser?num=" + userNumber;
+    msg31 = "/theuser?num=" + userNumber;
     return msg31;
 }
 
@@ -393,6 +439,78 @@ app.get('/dashboard', function(req, res) {
 
     loginvar = false;
 });
+
+
+//===================== ITEM PAGE ======================================
+// ==================== GET ITEM PAGE ==================================
+
+//GET for item page
+app.get('/theitem', function(req, res) {
+    //loadUsersDb(dbcon);
+    //loadItemsDb(dbcon);
+    //console.log('A message through console log');
+    console.log(req.cookies);
+    //utilizing the cookies for the loggin system.
+    if(req.cookies.loggedin == 'true'){
+        loginvar = true;
+    }
+    if(req.cookies.loggedin == 'true'){
+        if(req.cookies.isadmin == 'true'){
+            //res.sendFile(path.join(__dirname + '/adminpanel.html'));
+            //what we are trying to implement.
+    msg = pageGeneratorItem("dashboard", req, res);
+    res.write(msg);
+        } else {
+            //what we are trying to implement.
+    msg = pageGeneratorItem("dashboard", req, res);
+    res.write(msg);
+            //res.sendFile(path.join(__dirname + '/dashboard.html'));
+        }
+    } else {
+        //res.sendFile(path.join(__dirname + '/index.html'));
+        //what we are trying to implement.
+    msg = pageGeneratorItem("index", req, res);
+    res.write(msg);
+    }
+    loginvar = false; 
+}
+);
+
+//===================== USER PAGE ======================================
+// ==================== GET USER PAGE ==================================
+
+//GET for user page
+app.get('/theuser', function(req, res) {
+    //loadUsersDb(dbcon);
+    //loadItemsDb(dbcon);
+    //console.log('A message through console log');
+    console.log(req.cookies);
+    //utilizing the cookies for the loggin system.
+    if(req.cookies.loggedin == 'true'){
+        loginvar = true;
+    }
+    if(req.cookies.loggedin == 'true'){
+        if(req.cookies.isadmin == 'true'){
+            //res.sendFile(path.join(__dirname + '/adminpanel.html'));
+            //what we are trying to implement.
+    msg = pageGeneratorUser("adminpanel", req, res);
+    res.write(msg);
+        } else {
+            //what we are trying to implement.
+    msg = pageGeneratorUser("adminpanel", req, res);
+    res.write(msg);
+            //res.sendFile(path.join(__dirname + '/dashboard.html'));
+        }
+    } else {
+        //res.sendFile(path.join(__dirname + '/index.html'));
+        //what we are trying to implement.
+    msg = pageGeneratorUser("index", req, res);
+    res.write(msg);
+    }
+    loginvar = false; 
+}
+);
+
 //==========================================================================
 //===================== USERS' CRUD STARTS HERE ============================
 //==========================================================================
