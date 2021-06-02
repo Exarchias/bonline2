@@ -41,12 +41,12 @@ function pageGenerator(pagename, req, res, pgloging = false, pgadmin = false, pg
 }
 
 //===================== Page Generation for an item ================================
-function pageGeneratorItem(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+function pageGeneratorItem(num = 0, pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
     var title = "";
-    if(pagename == "index"){
-        title = "Bonline";
+    if(theItems == null){
+        title = "A nice item";
     } else {
-        title = pagename;
+        title = theItems[num].name;
     }
     msg1="";
     msg1 = msg1 + "<head>";
@@ -64,12 +64,12 @@ function pageGeneratorItem(pagename, req, res, pgloging = false, pgadmin = false
 }
 
 //===================== Page Generation for a user ================================
-function pageGeneratorUser(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+function pageGeneratorUser(num = 0, pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
     var title = "";
-    if(pagename == "index"){
-        title = "Bonline";
+    if(theUsers == null){
+        title = "A nice item";
     } else {
-        title = pagename;
+        title = theUsers[num].username;
     }
     msg1="";
     msg1 = msg1 + "<head>";
@@ -450,6 +450,9 @@ app.get('/theitem', function(req, res) {
     //loadItemsDb(dbcon);
     //console.log('A message through console log');
     console.log(req.cookies);
+
+    //fetching the number through the get parameters.
+    theItemNumber = req.query.num;
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
         loginvar = true;
@@ -458,18 +461,18 @@ app.get('/theitem', function(req, res) {
         if(req.cookies.isadmin == 'true'){
             //res.sendFile(path.join(__dirname + '/adminpanel.html'));
             //what we are trying to implement.
-    msg = pageGeneratorItem("dashboard", req, res);
+    msg = pageGeneratorItem(theItemNumber,"dashboard", req, res);
     res.write(msg);
         } else {
             //what we are trying to implement.
-    msg = pageGeneratorItem("dashboard", req, res);
+    msg = pageGeneratorItem(theItemNumber, "dashboard", req, res);
     res.write(msg);
             //res.sendFile(path.join(__dirname + '/dashboard.html'));
         }
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGeneratorItem("index", req, res);
+    msg = pageGeneratorItem(theItemNumber, "index", req, res);
     res.write(msg);
     }
     loginvar = false; 
@@ -485,6 +488,8 @@ app.get('/theuser', function(req, res) {
     //loadItemsDb(dbcon);
     //console.log('A message through console log');
     console.log(req.cookies);
+    //fetching the number through the get parameters.
+    theUserNumber = req.query.num;
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
         loginvar = true;
@@ -493,18 +498,18 @@ app.get('/theuser', function(req, res) {
         if(req.cookies.isadmin == 'true'){
             //res.sendFile(path.join(__dirname + '/adminpanel.html'));
             //what we are trying to implement.
-    msg = pageGeneratorUser("adminpanel", req, res);
+    msg = pageGeneratorUser(theUserNumber,"adminpanel", req, res);
     res.write(msg);
         } else {
             //what we are trying to implement.
-    msg = pageGeneratorUser("adminpanel", req, res);
+    msg = pageGeneratorUser(theUserNumber,"adminpanel", req, res);
     res.write(msg);
             //res.sendFile(path.join(__dirname + '/dashboard.html'));
         }
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGeneratorUser("index", req, res);
+    msg = pageGeneratorUser(theUserNumber,"index", req, res);
     res.write(msg);
     }
     loginvar = false; 
