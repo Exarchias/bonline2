@@ -55,12 +55,24 @@ function pageGeneratorItem(num = 0, pagename, req, res, pgloging = false, pgadmi
     msg1 = msg1 + "</head><body>";
     msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
     msg1 = msg1 + "<h1>Page of the Item #" + title + "</h1>";
-    text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
+    text1 = itemInfoDisplay(theItems[num]);
     msg1 = msg1 + text1;
     text2 = footerGenerator();
     msg1 = msg1 + text2;
     msg1 = msg1 + '</body></html>';
     return msg1;
+}
+
+//Displaying the details of the item
+function itemInfoDisplay(item){
+    msg1item="";
+    msg1item = msg1item + '<p><a href="/index.html"><img border="0" alt="image of the item" src="item.jpg" height="200"></a><br/>';
+    msg1item = msg1item + "<b>" + item.name + "</b><br/>";
+    msg1item = msg1item + "Price: " + item.price + "<br/>";
+    msg1item = msg1item + "Description: " + item.description + "<br/></p>";
+    msg1item = msg1item + "<h2>OTHER ITEMS</h2><br/>"
+    msg1item = msg1item + itemsDisplayGenerator();
+    return msg1item;
 }
 
 //===================== Page Generation for a user ================================
