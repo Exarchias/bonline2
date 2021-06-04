@@ -55,10 +55,12 @@ function pageGeneratorItem(num = 0, pagename, req, res, pgloging = false, pgadmi
     msg1 = msg1 + "</head><body>";
     msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
     msg1 = msg1 + "<h1>Page of the Item #" + title + "</h1>";
-    text1 = itemInfoDisplay(theItems[num]);
+    text1 = menuGeneratorItem(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
-    text2 = footerGenerator();
+    text2 = itemInfoDisplay(theItems[num]);
     msg1 = msg1 + text2;
+    text3 = footerGenerator();
+    msg1 = msg1 + text3;
     msg1 = msg1 + '</body></html>';
     return msg1;
 }
@@ -73,6 +75,65 @@ function itemInfoDisplay(item){
     msg1item = msg1item + "<h2>OTHER ITEMS</h2><br/>"
     msg1item = msg1item + itemsDisplayGenerator();
     return msg1item;
+}
+
+//generates the item's menu automatically.
+function menuGeneratorItem(pagename, req, res, pgloging, pgadmin, pgname){
+    msg2="";
+    msg2 = msg2 + "<p>";
+    if((req.cookies.loggedin == 'true') || pgloging){
+        if(pgname == "A user"){
+            if(req.cookies.username != null){
+                if(req.cookies.username != 'undefined'){
+                    pgname = req.cookies.username;
+                }
+            }
+        }
+        msg2 = msg2 + "Welcome " + pgname + "! ";
+        msg2 = msg2 + '<br/>';
+        if((req.cookies.isadmin == 'true') || pgadmin){
+            msg2 = msg2 + "You are Admin! ";
+            msg2 = msg2 + '<br/>';
+            //do admin stuff
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/dashboard.html">dashboard</a>|';
+            } else {
+                msg2 = msg2 + '|<a href="/adminpanel.html">adminpanel</a>|';
+            }
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '<br/>';
+            
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
+                msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
+                msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + usersDisplayGenerator();
+
+            } else {
+                msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+                msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+                msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + itemsDisplayGenerator();
+            }
+            
+        } else {
+            //do dashboard stuff
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+            msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+            msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+            msg2 = msg2 + '<br/>';
+            //msg2 = msg2 + itemsDisplayGenerator();
+        }
+    } else {
+        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
+        msg2 = msg2 + '<br/>';
+        //msg2 = msg2 + itemsDisplayGenerator();
+    }
+    msg2 = msg2 + "</p>";
+    return msg2;
 }
 
 //===================== Page Generation for a user ================================
@@ -469,7 +530,7 @@ app.get('/theitem', function(req, res) {
     if(req.cookies.loggedin == 'true'){
         loginvar = true;
     }
-    if(req.cookies.loggedin == 'true'){
+    if(req.cookies.loggedin == 'true' && theItems != null){
         if(req.cookies.isadmin == 'true'){
             //res.sendFile(path.join(__dirname + '/adminpanel.html'));
             //what we are trying to implement.
@@ -484,7 +545,7 @@ app.get('/theitem', function(req, res) {
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGeneratorItem(theItemNumber, "index", req, res);
+    msg = pageGenerator("index", req, res);
     res.write(msg);
     }
     loginvar = false; 
