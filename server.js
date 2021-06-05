@@ -530,18 +530,16 @@ app.get('/theitem', function(req, res) {
     if(req.cookies.loggedin == 'true'){
         loginvar = true;
     }
-    if(req.cookies.loggedin == 'true' && theItems != null){
-        if(req.cookies.isadmin == 'true'){
-            //res.sendFile(path.join(__dirname + '/adminpanel.html'));
-            //what we are trying to implement.
-    msg = pageGeneratorItem(theItemNumber,"dashboard", req, res);
-    res.write(msg);
-        } else {
-            //what we are trying to implement.
+    if(theItems != null){
+        if(theItemNumber >= theItems.length){
+            theItemNumber = 0;
+        }
+        
+     //what we are trying to implement.
     msg = pageGeneratorItem(theItemNumber, "dashboard", req, res);
     res.write(msg);
             //res.sendFile(path.join(__dirname + '/dashboard.html'));
-        }
+        
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
