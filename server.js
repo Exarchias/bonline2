@@ -569,18 +569,23 @@ app.get('/theuser', function(req, res) {
         if(req.cookies.isadmin == 'true'){
             //res.sendFile(path.join(__dirname + '/adminpanel.html'));
             //what we are trying to implement.
+            if(theUsers != null){
+                if(theUserNumber >= theUsers.length){
+                    theUserNumber = 0;
+                }
+            }
     msg = pageGeneratorUser(theUserNumber,"adminpanel", req, res);
     res.write(msg);
         } else {
             //what we are trying to implement.
-    msg = pageGeneratorUser(theUserNumber,"adminpanel", req, res);
+    msg = pageGenerator("dashboard", req, res);
     res.write(msg);
             //res.sendFile(path.join(__dirname + '/dashboard.html'));
         }
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGeneratorUser(theUserNumber,"index", req, res);
+    msg = pageGenerator("index", req, res);
     res.write(msg);
     }
     loginvar = false; 
