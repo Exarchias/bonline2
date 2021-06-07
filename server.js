@@ -150,15 +150,92 @@ function pageGeneratorUser(num = 0, pagename, req, res, pgloging = false, pgadmi
     msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
     msg1 = msg1 + "</head><body>";
     msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
-    msg1 = msg1 + "<h1>Page of the user #" + title + "</h1>";
-    text1 = menuGenerator(pagename, req, res, pgloging, pgadmin, pgname);
+    msg1 = msg1 + "<h1>Page of the User #" + title + "</h1>";
+    text1 = menuGeneratorUser(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
-    text2 = footerGenerator();
+    text2 = userInfoDisplay(theUsers[num]);
     msg1 = msg1 + text2;
+    text3 = footerGenerator();
+    msg1 = msg1 + text3;
     msg1 = msg1 + '</body></html>';
     return msg1;
 }
 
+
+//Displaying the details of the item
+function userInfoDisplay(user){
+    msg1user="";
+    msg1user = msg1user + '<p><a href="/index.html"><img border="0" alt="image of the item" src="anon.jpg" height="200"></a><br/>';
+    msg1user = msg1user + "<b>" + user.username + "</b><br/>";
+    msg1user = msg1user + "Email: " + user.email + "<br/>";
+    msg1user = msg1user + "Phone: " + user.telephone + "<br/></p>";
+    msg1user = msg1user + "<h2>OTHER USERS</h2><br/>"
+    msg1user = msg1user + usersDisplayGenerator();
+    return msg1user;
+}
+
+//generates the item's menu automatically.
+function menuGeneratorUser(pagename, req, res, pgloging, pgadmin, pgname){
+    msg2="";
+    msg2 = msg2 + "<p>";
+    if((req.cookies.loggedin == 'true') || pgloging){
+        if(pgname == "A user"){
+            if(req.cookies.username != null){
+                if(req.cookies.username != 'undefined'){
+                    pgname = req.cookies.username;
+                }
+            }
+        }
+        msg2 = msg2 + "Welcome " + pgname + "! ";
+        msg2 = msg2 + '<br/>';
+        if((req.cookies.isadmin == 'true') || pgadmin){
+            msg2 = msg2 + "You are Admin! ";
+            msg2 = msg2 + '<br/>';
+            //do admin stuff
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/dashboard.html">dashboard</a>|';
+            } else {
+                msg2 = msg2 + '|<a href="/adminpanel.html">adminpanel</a>|';
+            }
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '<br/>';
+            
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
+                msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
+                msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + usersDisplayGenerator();
+
+            } else {
+                msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+                msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+                msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + itemsDisplayGenerator();
+            }
+            
+        } else {
+            //do dashboard stuff
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+            msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+            msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+            msg2 = msg2 + '<br/>';
+            //msg2 = msg2 + itemsDisplayGenerator();
+        }
+    } else {
+        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
+        msg2 = msg2 + '<br/>';
+        //msg2 = msg2 + itemsDisplayGenerator();
+    }
+    msg2 = msg2 + "</p>";
+    return msg2;
+}
+
+
+
+//===================== The Default Menu Generator
 //generates the links automatically.
 function menuGenerator(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
