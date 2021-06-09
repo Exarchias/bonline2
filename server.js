@@ -140,6 +140,105 @@ function menuGeneratorItem(pagename, req, res, pgloging, pgadmin, pgname){
     return msg2;
 }
 
+//===================== Page Generation for the shopping cart ================================
+function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+    var title = "";
+    var num = 0;
+    msg1="";
+    msg1 = msg1 + "<head>";
+    msg1 = msg1 + "<title>Welcome to the Shopping Cart</title>";
+    msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
+    msg1 = msg1 + "</head><body>";
+    msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
+    msg1 = msg1 + "<h1>Welcome to the Shopping Cart</h1>";
+    text1 = menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname);
+    msg1 = msg1 + text1;
+    text2 = cartInfoDisplay(theItems[num]);
+    msg1 = msg1 + text2;
+    text3 = footerGenerator();
+    msg1 = msg1 + text3;
+    msg1 = msg1 + '</body></html>';
+    return msg1;
+}
+
+//Displaying the details of the item
+function cartInfoDisplay(item){
+    msg1item="";
+    msg1item = msg1item + '<p><a href="/checkout.html"><img border="0" alt="Go to checkout" src="checkout.jpg" height="100"></a><br/>';
+    msg1item = msg1item + '<a href="/checkout.html">|Go to checkout|</a><br/>';
+    msg1item = msg1item + "<b>Details</b><br/>";
+    msg1item = msg1item + "<b>=======</b><br/>";
+    msg1item = msg1item + "Price: " + item.price + "<br/>";
+    msg1item = msg1item + "Date: (ADD A DATE HERE)<br/></p>";
+    msg1item = msg1item + "<h2>The items in the shopping cart</h2><br/>"
+    msg1item = msg1item + itemsDisplayGenerator();
+    return msg1item;
+}
+
+//generates the item's menu automatically.
+function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
+    msg2="";
+    msg2 = msg2 + "<p>";
+    if((req.cookies.loggedin == 'true') || pgloging){
+        if(pgname == "A user"){
+            if(req.cookies.username != null){
+                if(req.cookies.username != 'undefined'){
+                    pgname = req.cookies.username;
+                }
+            }
+        }
+        msg2 = msg2 + "Welcome " + pgname + "! ";
+        msg2 = msg2 + '<br/>';
+        if((req.cookies.isadmin == 'true') || pgadmin){
+            msg2 = msg2 + "You are Admin! ";
+            msg2 = msg2 + '<br/>';
+            //do admin stuff
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/dashboard.html">dashboard</a>|';
+            } else {
+                msg2 = msg2 + '|<a href="/adminpanel.html">adminpanel</a>|';
+            }
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '<br/>';
+            
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
+                msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
+                msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
+                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + usersDisplayGenerator();
+
+            } else {
+                msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+                msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+                msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + itemsDisplayGenerator();
+            }
+            
+        } else {
+            //do dashboard stuff
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+            msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+            msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+            msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+            msg2 = msg2 + '<br/>';
+            //msg2 = msg2 + itemsDisplayGenerator();
+        }
+    } else {
+        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
+        msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+        msg2 = msg2 + '<br/>';
+        //msg2 = msg2 + itemsDisplayGenerator();
+    }
+    msg2 = msg2 + "</p>";
+    return msg2;
+}
+
+
 //===================== Page Generation for a user ================================
 function pageGeneratorUser(num = 0, pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
     var title = "";
@@ -616,12 +715,12 @@ app.get('/cart.html', function(req, res) {
     if(req.cookies.loggedin == 'true'){
         //res.sendFile(path.join(__dirname + '/dashboard.html'));
         //what we are trying to implement.
-    msg = pageGenerator("dashboard", req, res);
+    msg = pageGeneratorCart("dashboard", req, res);
     res.write(msg);
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGenerator("index", req, res);
+    msg = pageGeneratorCart("index", req, res);
     res.write(msg);
     }
 
