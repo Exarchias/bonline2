@@ -13,6 +13,7 @@ const { title } = require('process');
 var theJson;
 var theUsers; //downloaded data of all the users. useful for usermanadement like login. 
 var theItems; //for collecting and displaying the items.
+var theCartItems; //for collecting and displaying the items that are inside the Cart.
 var msg;
 var admin = false;
 var loginvar = false;
@@ -153,7 +154,7 @@ function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false
     msg1 = msg1 + "<h1>Welcome to the Shopping Cart</h1>";
     text1 = menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
-    text2 = cartInfoDisplay(theItems[num]);
+    text2 = cartInfoDisplay(theCartItems[num]);
     msg1 = msg1 + text2;
     text3 = footerGenerator();
     msg1 = msg1 + text3;
@@ -171,8 +172,34 @@ function cartInfoDisplay(item){
     msg1item = msg1item + "Price: " + item.price + "<br/>";
     msg1item = msg1item + "Date: (ADD A DATE HERE)<br/></p>";
     msg1item = msg1item + "<h2>The items in the shopping cart</h2><br/>"
-    msg1item = msg1item + itemsDisplayGenerator();
+    msg1item = msg1item + cartItemsDisplayGenerator();
     return msg1item;
+}
+
+//generates a display of the items in the cart, dynamically 
+function cartItemsDisplayGenerator(){
+    //loadItemsDb(dbcon);
+    msg4 = "<br/>";
+    if(theCartItems != null){
+        var count = Object.keys(theCartItems).length;
+        msg4 = msg4 + "<b>Here is the display of the items in the shopping cart</b><br/>";
+        msg4 = msg4 + "<table><tr><th>Ord.No</th><th>Title</th><th>Description</th><th>Price</th></tr>";
+        for(x=0; x<count; x++){
+            //console.log("Checking user:" + theUsers[x].username);
+            theItemUrl = itemUrlGenerator(x);
+            msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theCartItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
+            + theCartItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
+            + theCartItems[x].price + '</a></td></tr>';
+        }
+        msg4 = msg4 + "</table>";
+    } else {
+        msg4 = msg4 + '<a href="/index.html"><img alt="enter to the store!" src="store.jpg" height="300"></a><br/>';
+        msg4 = msg4 + "Items of tremendous quality!<br/>";
+        msg4 = msg4 + "We have the Best prices and the best reviews.<br/>";
+        msg4 = msg4 + "Click refresh to see our collection:<br/>";
+    }
+    msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
+    return msg4;
 }
 
 //generates the item's menu automatically.
@@ -704,9 +731,10 @@ app.get('/dashboard', function(req, res) {
 //===================== SHOPPING CART ======================================
 // ==================== GET SHOPPING CART ==================================
 
-//GET for dashboard.html
+//GET for cart.html
 app.get('/cart.html', function(req, res) {
     loadItemsDb(dbcon);
+    theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
     console.log(req.cookies);
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
@@ -728,9 +756,10 @@ app.get('/cart.html', function(req, res) {
 });
 
 
-//GET for dashboard
-app.get('/dashboard', function(req, res) {
+//GET for cart
+app.get('/cart', function(req, res) {
     loadItemsDb(dbcon);
+    theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
     console.log(req.cookies);
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
@@ -739,12 +768,12 @@ app.get('/dashboard', function(req, res) {
     if(req.cookies.loggedin == 'true'){
         //res.sendFile(path.join(__dirname + '/dashboard.html'));
         //what we are trying to implement.
-    msg = pageGenerator("dashboard", req, res);
+    msg = pageGeneratorCart("dashboard", req, res);
     res.write(msg);
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
         //what we are trying to implement.
-    msg = pageGenerator("index", req, res);
+    msg = pageGeneratorCart("index", req, res);
     res.write(msg);
     }
 
