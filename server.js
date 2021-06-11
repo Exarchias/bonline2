@@ -13,7 +13,7 @@ const { title } = require('process');
 var theJson;
 var theUsers; //downloaded data of all the users. useful for usermanadement like login. 
 var theItems; //for collecting and displaying the items.
-var theCartItems; //for collecting and displaying the items that are inside the Cart.
+var theCartItems = null; //for collecting and displaying the items that are inside the Cart.
 var msg;
 var admin = false;
 var loginvar = false;
@@ -154,8 +154,10 @@ function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false
     msg1 = msg1 + "<h1>Welcome to the Shopping Cart</h1>";
     text1 = menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
+    if(theCartItems != null){
     text2 = cartInfoDisplay(theCartItems[num]);
     msg1 = msg1 + text2;
+    }
     text3 = footerGenerator();
     msg1 = msg1 + text3;
     msg1 = msg1 + '</body></html>';
@@ -734,7 +736,7 @@ app.get('/dashboard', function(req, res) {
 //GET for cart.html
 app.get('/cart.html', function(req, res) {
     loadItemsDb(dbcon);
-    theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
+    //theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
     console.log(req.cookies);
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
@@ -759,7 +761,7 @@ app.get('/cart.html', function(req, res) {
 //GET for cart
 app.get('/cart', function(req, res) {
     loadItemsDb(dbcon);
-    theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
+    //theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
     console.log(req.cookies);
     //utilizing the cookies for the loggin system.
     if(req.cookies.loggedin == 'true'){
