@@ -13,7 +13,7 @@ const { title } = require('process');
 var theJson;
 var theUsers; //downloaded data of all the users. useful for usermanadement like login. 
 var theItems; //for collecting and displaying the items.
-var theCartItems = null; //for collecting and displaying the items that are inside the Cart.
+var theCartItems = []; //for collecting and displaying the items that are inside the Cart.
 var msg;
 var admin = false;
 var loginvar = false;
@@ -58,7 +58,7 @@ function pageGeneratorItem(num = 0, pagename, req, res, pgloging = false, pgadmi
     msg1 = msg1 + "<h1>Page of the Item #" + title + "</h1>";
     text1 = menuGeneratorItem(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
-    text2 = itemInfoDisplay(theItems[num]);
+    text2 = itemInfoDisplay(theItems[num], num);
     msg1 = msg1 + text2;
     text3 = footerGenerator();
     msg1 = msg1 + text3;
@@ -67,12 +67,13 @@ function pageGeneratorItem(num = 0, pagename, req, res, pgloging = false, pgadmi
 }
 
 //Displaying the details of the item
-function itemInfoDisplay(item){
+function itemInfoDisplay(item, thenum){
     msg1item="";
     msg1item = msg1item + '<p><a href="/index.html"><img border="0" alt="image of the item" src="item.jpg" height="200"></a><br/>';
     msg1item = msg1item + "<b>" + item.name + "</b><br/>";
     msg1item = msg1item + "Price: " + item.price + "<br/>";
-    msg1item = msg1item + "Description: " + item.description + "<br/></p>";
+    msg1item = msg1item + "Description: " + item.description + "<br/>";
+    msg1item = msg1item + '<a href="/tocart?num=' + thenum + '">|Add item to the Shopping Cart|</a><br/></p>';
     msg1item = msg1item + "<h2>OTHER ITEMS</h2><br/>"
     msg1item = msg1item + itemsDisplayGenerator();
     return msg1item;
@@ -154,13 +155,19 @@ function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false
     msg1 = msg1 + "<h1>Welcome to the Shopping Cart</h1>";
     text1 = menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
-    if(theCartItems != null){
+    if(theCartItems.length > 0){
     text2 = cartInfoDisplay(theCartItems[num]);
     msg1 = msg1 + text2;
     }
     text3 = footerGenerator();
     msg1 = msg1 + text3;
     msg1 = msg1 + '</body></html>';
+
+    //these 2 lines temprorarily clean the the shopping cart list.
+    theCartItems = [];
+    res.cookie('theCartItems', theCartItems);
+    // temporarily code for emptying the shopping cart list ends here
+
     return msg1;
 }
 
@@ -781,6 +788,53 @@ app.get('/cart', function(req, res) {
 
     loginvar = false;
 });
+
+//===================== TO THE SHOPPING CART PAGE ======================================
+// ==================== GET TO THE SHOPPING CART PAGE ==================================
+
+//GET for item to the shopping cart
+app.get('/tocart', function(req, res) {
+    //loadUsersDb(dbcon);
+    //loadItemsDb(dbcon);
+    //console.log('A message through console log');
+    //console.log(req.cookies);
+
+    //fetching the number through the get parameters.
+    theItemNumber = req.query.num;
+    //utilizing the cookies for the loggin system.
+    if(req.cookies.loggedin == 'true'){
+        loginvar = true;
+    }
+    if(theItems != null){
+        if(theItemNumber >= theItems.length){
+            theItemNumber = 0;
+        }
+
+        //inserting the item to the shopping cart cookies
+        theCartItems = req.cookies.theCartItems;
+        theIndex = theCartItems.length;
+        console.log("the index is " + theIndex);
+        tmpvar = theItems[theItemNumber];
+        console.log(tmpvar);
+        //theCartItems[theIndex] = tmpvar; //need to fix the push here
+        theCartItems[theIndex] = tmpvar;
+        res.cookie('theCartItems', theCartItems);
+        console.log(theCartItems);
+        
+     //what we are trying to implement.
+    msg = pageGeneratorItem(theItemNumber, "dashboard", req, res);
+    res.write(msg);
+            //res.sendFile(path.join(__dirname + '/dashboard.html'));
+        
+    } else {
+        //res.sendFile(path.join(__dirname + '/index.html'));
+        //what we are trying to implement.
+    msg = pageGenerator("index", req, res);
+    res.write(msg);
+    }
+    loginvar = false; 
+}
+);
 
 
 //===================== ITEM PAGE ======================================
