@@ -83,6 +83,8 @@ function itemInfoDisplay(item, thenum){
 function menuGeneratorItem(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
     msg2 = msg2 + "<p>";
+    msg2 = msg2 + "The date today: " + theDayToday();
+    msg2 = msg2 + '<br/>';
     if((req.cookies.loggedin == 'true') || pgloging){
         if(pgname == "A user"){
             if(req.cookies.username != null){
@@ -178,8 +180,14 @@ function cartInfoDisplay(item){
     msg1item = msg1item + '<a href="/checkout.html">|Go to checkout|</a><br/>';
     msg1item = msg1item + "<b>Details</b><br/>";
     msg1item = msg1item + "<b>=======</b><br/>";
-    msg1item = msg1item + "Price: " + item.price + "<br/>";
-    msg1item = msg1item + "Date: (ADD A DATE HERE)<br/></p>";
+    totalsum = cartTotalSumGenerator();
+    msg1item = msg1item + "Sum: " + totalsum + "<br/>";
+    totaltax = totalsum * 0.25;
+    msg1item = msg1item + "Taxes: " + totaltax + "<br/>";
+    totaltotal = totalsum * 1.25;
+    msg1item = msg1item + "Final Price: " + totaltotal + "<br/>";
+    msgtheDayToday = theDayToday();
+    msg1item = msg1item + "Date: " + msgtheDayToday + "<br/></p>";
     msg1item = msg1item + "<h2>The items in the shopping cart</h2><br/>"
     msg1item = msg1item + cartItemsDisplayGenerator();
     return msg1item;
@@ -215,6 +223,8 @@ function cartItemsDisplayGenerator(){
 function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
     msg2 = msg2 + "<p>";
+    msg2 = msg2 + "The date today: " + theDayToday();
+    msg2 = msg2 + '<br/>';
     if((req.cookies.loggedin == 'true') || pgloging){
         if(pgname == "A user"){
             if(req.cookies.username != null){
@@ -274,6 +284,27 @@ function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
     return msg2;
 }
 
+//calculates the total price from all the items in the basket list
+function cartTotalSumGenerator(){
+    msgsum = 0;
+    if(theCartItems.length > 0){
+        for(x=0; x<theCartItems.length; x++){
+            msgsum = +msgsum + +theCartItems[x].price;
+        }
+    } else {
+        msgsum = 0;
+    }
+
+    return msgsum;
+}
+
+function theDayToday(){
+    msgDate = "";
+    var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+    msgDate = utc;
+    return msgDate;
+}
+
 
 //===================== Page Generation for a user ================================
 function pageGeneratorUser(num = 0, pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
@@ -317,6 +348,8 @@ function userInfoDisplay(user){
 function menuGeneratorUser(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
     msg2 = msg2 + "<p>";
+    msg2 = msg2 + "The date today: " + theDayToday();
+    msg2 = msg2 + '<br/>';
     if((req.cookies.loggedin == 'true') || pgloging){
         if(pgname == "A user"){
             if(req.cookies.username != null){
@@ -382,6 +415,8 @@ function menuGeneratorUser(pagename, req, res, pgloging, pgadmin, pgname){
 function menuGenerator(pagename, req, res, pgloging, pgadmin, pgname){
     msg2="";
     msg2 = msg2 + "<p>";
+    msg2 = msg2 + "The date today: " + theDayToday();
+    msg2 = msg2 + '<br/>';
     if((req.cookies.loggedin == 'true') || pgloging){
         if(pgname == "A user"){
             if(req.cookies.username != null){
