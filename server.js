@@ -824,6 +824,33 @@ app.get('/cart', function(req, res) {
     loginvar = false;
 });
 
+//===================== CHECKOUT ======================================
+// ==================== GET CHECKOUT ==================================
+
+//GET for cart.html
+app.get('/checkout.html', function(req, res) {
+    loadItemsDb(dbcon);
+    //theCartItems = theItems; //that is temporary for so long we don't have functional shopping Cart
+    console.log(req.cookies);
+    //utilizing the cookies for the loggin system.
+    if(req.cookies.loggedin == 'true'){
+        loginvar = true;
+    }
+    if(req.cookies.loggedin == 'true'){
+        //res.sendFile(path.join(__dirname + '/dashboard.html'));
+        //what we are trying to implement.
+    msg = pageGeneratorCart("dashboard", req, res);
+    res.write(msg);
+    } else {
+        //res.sendFile(path.join(__dirname + '/index.html'));
+        //what we are trying to implement.
+    msg = pageGenerator("index", req, res);
+    res.write(msg);
+    }
+
+    loginvar = false;
+});
+
 //===================== TO THE SHOPPING CART PAGE ======================================
 // ==================== GET TO THE SHOPPING CART PAGE ==================================
 
