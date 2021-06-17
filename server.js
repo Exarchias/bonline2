@@ -164,12 +164,6 @@ function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false
     text3 = footerGenerator();
     msg1 = msg1 + text3;
     msg1 = msg1 + '</body></html>';
-
-    //these 2 lines temprorarily clean the the shopping cart list.
-    theCartItems = [];
-    res.cookie('theCartItems', theCartItems);
-    // temporarily code for emptying the shopping cart list ends here
-
     return msg1;
 }
 
@@ -303,6 +297,144 @@ function theDayToday(){
     var utc = new Date().toJSON().slice(0,10).replace(/-/g,'/');
     msgDate = utc;
     return msgDate;
+}
+
+//===================== Page Generation for the checkout ================================
+function pageGeneratorcheckout(pagename, req, res, pgloging = false, pgadmin = false, pgname="A user"){
+    var title = "";
+    var num = 0;
+    msg1="";
+    msg1 = msg1 + "<head>";
+    msg1 = msg1 + "<title>Welcome to checkout</title>";
+    msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
+    msg1 = msg1 + "</head><body>";
+    msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
+    msg1 = msg1 + "<h1>Welcome to checkout!</h1>";
+    text1 = menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname);
+    msg1 = msg1 + text1;
+    if(theCartItems.length > 0){
+    text2 = checkoutInfoDisplay(theCartItems[num]);
+    msg1 = msg1 + text2;
+    }
+    text3 = footerGenerator();
+    msg1 = msg1 + text3;
+    msg1 = msg1 + '</body></html>';
+
+    //clean the the shopping cart list.
+    theCartItems = [];
+    res.cookie('theCartItems', theCartItems);
+    //code for emptying the shopping cart list ends here
+
+    return msg1;
+}
+
+//Displaying the details of the item
+function checkoutInfoDisplay(item){
+    msg1item="";
+    msg1item = msg1item + "<p><b>Details</b><br/>";
+    msg1item = msg1item + "<b>=======</b><br/>";
+    totalsum = cartTotalSumGenerator();
+    msg1item = msg1item + "Sum: " + totalsum + "<br/>";
+    totaltax = totalsum * 0.25;
+    msg1item = msg1item + "Taxes: " + totaltax + "<br/>";
+    totaltotal = totalsum * 1.25;
+    msg1item = msg1item + "Final Price: " + totaltotal + "<br/>";
+    msgtheDayToday = theDayToday();
+    msg1item = msg1item + "Date: " + msgtheDayToday + "<br/></p>";
+    msg1item = msg1item + "<h2>The items in the shopping cart</h2><br/>"
+    msg1item = msg1item + cartItemsDisplayGenerator();
+    return msg1item;
+}
+
+//generates a display of the items in the cart, dynamically 
+function checkoutItemsDisplayGenerator(){
+    //loadItemsDb(dbcon);
+    msg4 = "<br/>";
+    if(theCartItems != null){
+        var count = Object.keys(theCartItems).length;
+        msg4 = msg4 + "<b>Here is the display of the items in the shopping cart</b><br/>";
+        msg4 = msg4 + "<table><tr><th>Ord.No</th><th>Title</th><th>Description</th><th>Price</th></tr>";
+        for(x=0; x<count; x++){
+            //console.log("Checking user:" + theUsers[x].username);
+            theItemUrl = itemUrlGenerator(x);
+            msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theCartItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
+            + theCartItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
+            + theCartItems[x].price + '</a></td></tr>';
+        }
+        msg4 = msg4 + "</table>";
+    } else {
+        msg4 = msg4 + '<a href="/index.html"><img alt="enter to the store!" src="store.jpg" height="300"></a><br/>';
+        msg4 = msg4 + "Items of tremendous quality!<br/>";
+        msg4 = msg4 + "We have the Best prices and the best reviews.<br/>";
+        msg4 = msg4 + "Click refresh to see our collection:<br/>";
+    }
+    msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
+    return msg4;
+}
+
+//generates the item's menu automatically.
+function menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname){
+    msg2="";
+    msg2 = msg2 + "<p>";
+    msg2 = msg2 + "The date today: " + theDayToday();
+    msg2 = msg2 + '<br/>';
+    if((req.cookies.loggedin == 'true') || pgloging){
+        if(pgname == "A user"){
+            if(req.cookies.username != null){
+                if(req.cookies.username != 'undefined'){
+                    pgname = req.cookies.username;
+                }
+            }
+        }
+        msg2 = msg2 + "Welcome " + pgname + "! ";
+        msg2 = msg2 + '<br/>';
+        if((req.cookies.isadmin == 'true') || pgadmin){
+            msg2 = msg2 + "You are Admin! ";
+            msg2 = msg2 + '<br/>';
+            //do admin stuff
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/dashboard.html">dashboard</a>|';
+            } else {
+                msg2 = msg2 + '|<a href="/adminpanel.html">adminpanel</a>|';
+            }
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '<br/>';
+            
+            if(pagename == "adminpanel"){
+                msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
+                msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
+                msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
+                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + usersDisplayGenerator();
+
+            } else {
+                msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+                msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+                msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                msg2 = msg2 + '<br/>';
+                //msg2 = msg2 + itemsDisplayGenerator();
+            }
+            
+        } else {
+            //do dashboard stuff
+            msg2 = msg2 + '|<a href="/index.html">Homepage</a>||<a href="/logout.html">logout</a>|';
+            msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
+            msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
+            msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
+            msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+            msg2 = msg2 + '<br/>';
+            //msg2 = msg2 + itemsDisplayGenerator();
+        }
+    } else {
+        msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
+        msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+        msg2 = msg2 + '<br/>';
+        //msg2 = msg2 + itemsDisplayGenerator();
+    }
+    msg2 = msg2 + "</p>";
+    return msg2;
 }
 
 
@@ -839,7 +971,7 @@ app.get('/checkout.html', function(req, res) {
     if(req.cookies.loggedin == 'true'){
         //res.sendFile(path.join(__dirname + '/dashboard.html'));
         //what we are trying to implement.
-    msg = pageGeneratorCart("dashboard", req, res);
+    msg = pageGeneratorcheckout("dashboard", req, res);
     res.write(msg);
     } else {
         //res.sendFile(path.join(__dirname + '/index.html'));
