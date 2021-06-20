@@ -170,8 +170,12 @@ function pageGeneratorCart(pagename, req, res, pgloging = false, pgadmin = false
 //Displaying the details of the item
 function cartInfoDisplay(item){
     msg1item="";
-    msg1item = msg1item + '<p><a href="/checkout.html"><img border="0" alt="Go to checkout" src="checkout.jpg" height="100"></a><br/>';
-    msg1item = msg1item + '<a href="/checkout.html">|Go to checkout|</a><br/>';
+    if(theCartItems != null){
+        msg1item = msg1item + '<p><a href="/checkout.html"><img border="0" alt="Go to checkout" src="checkout.jpg" height="100"></a><br/>';
+        msg1item = msg1item + '<a href="/checkout.html">|Go to checkout|</a><br/>';
+    }
+    //msg1item = msg1item + '<p><a href="/checkout.html"><img border="0" alt="Go to checkout" src="checkout.jpg" height="100"></a><br/>';
+    //msg1item = msg1item + '<a href="/checkout.html">|Go to checkout|</a><br/>';
     msg1item = msg1item + "<b>Details</b><br/>";
     msg1item = msg1item + "<b>=======</b><br/>";
     totalsum = cartTotalSumGenerator();
@@ -197,7 +201,7 @@ function cartItemsDisplayGenerator(){
         msg4 = msg4 + "<table><tr><th>Ord.No</th><th>Title</th><th>Description</th><th>Price</th></tr>";
         for(x=0; x<count; x++){
             //console.log("Checking user:" + theUsers[x].username);
-            theItemUrl = itemUrlGenerator(x);
+            theItemUrl = itemUrlGenerator(theCartItems[x].code);
             msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theCartItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
             + theCartItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
             + theCartItems[x].price + '</a></td></tr>';
@@ -209,7 +213,7 @@ function cartItemsDisplayGenerator(){
         msg4 = msg4 + "We have the Best prices and the best reviews.<br/>";
         msg4 = msg4 + "Click refresh to see our collection:<br/>";
     }
-    msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
+    msg4 = msg4 + '|<a href="/cart.html">Refresh!</a>|<br/>';
     return msg4;
 }
 
@@ -245,7 +249,12 @@ function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
                 msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
                 msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
                 msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
-                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                if(theCartItems != null){
+                    if(theCartItems.length > 0){
+                    msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                    }
+                }
+                //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
                 msg2 = msg2 + '<br/>';
                 //msg2 = msg2 + usersDisplayGenerator();
 
@@ -253,7 +262,12 @@ function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
                 msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
                 msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
                 msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
-                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                if(theCartItems != null){
+                    if(theCartItems.length > 0){
+                    msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                    }
+                }
+                //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
                 msg2 = msg2 + '<br/>';
                 //msg2 = msg2 + itemsDisplayGenerator();
             }
@@ -264,13 +278,23 @@ function menuGeneratorCart(pagename, req, res, pgloging, pgadmin, pgname){
             msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
             msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
             msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
-            msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+            if(theCartItems != null){
+                if(theCartItems.length > 0){
+                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                }
+            }
+            //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
             msg2 = msg2 + '<br/>';
             //msg2 = msg2 + itemsDisplayGenerator();
         }
     } else {
         msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
-        msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+        //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+        if(theCartItems != null){
+            if(theCartItems.length > 0){
+            msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+            }
+        }
         msg2 = msg2 + '<br/>';
         //msg2 = msg2 + itemsDisplayGenerator();
     }
@@ -309,7 +333,7 @@ function pageGeneratorcheckout(pagename, req, res, pgloging = false, pgadmin = f
     msg1 = msg1 + '<LINK href="style.css" rel="stylesheet" type="text/css">';
     msg1 = msg1 + "</head><body>";
     msg1 = msg1 + '<a href="/index.html"><img border="0" alt="Bonline Logo" src="logo.jpg" height="100"></a><br/>';
-    msg1 = msg1 + "<h1>Welcome to checkout!</h1>";
+    msg1 = msg1 + "<h1>Thank you for your purchase!</h1>";
     text1 = menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname);
     msg1 = msg1 + text1;
     if(theCartItems.length > 0){
@@ -342,7 +366,7 @@ function checkoutInfoDisplay(item){
     msgtheDayToday = theDayToday();
     msg1item = msg1item + "Date: " + msgtheDayToday + "<br/></p>";
     msg1item = msg1item + "<h2>The items in the shopping cart</h2><br/>"
-    msg1item = msg1item + cartItemsDisplayGenerator();
+    msg1item = msg1item + checkoutItemsDisplayGenerator();
     return msg1item;
 }
 
@@ -357,9 +381,9 @@ function checkoutItemsDisplayGenerator(){
         for(x=0; x<count; x++){
             //console.log("Checking user:" + theUsers[x].username);
             theItemUrl = itemUrlGenerator(x);
-            msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theCartItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
-            + theCartItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
-            + theCartItems[x].price + '</a></td></tr>';
+            msg4 = msg4 + '<tr><td>' + x + '</td><td>' + theCartItems[x].name + '</td><td>' 
+            + theCartItems[x].description +  '</td><td>'
+            + theCartItems[x].price + '</td></tr>';
         }
         msg4 = msg4 + "</table>";
     } else {
@@ -368,7 +392,7 @@ function checkoutItemsDisplayGenerator(){
         msg4 = msg4 + "We have the Best prices and the best reviews.<br/>";
         msg4 = msg4 + "Click refresh to see our collection:<br/>";
     }
-    msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
+    //msg4 = msg4 + '|<a href="/index.html">Refresh!</a>|<br/>';
     return msg4;
 }
 
@@ -404,7 +428,7 @@ function menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname){
                 msg2 = msg2 + '|<a href="/createuser.html">create a user</a>|';
                 msg2 = msg2 + '|<a href="/edituser.html">edit a user</a>|';
                 msg2 = msg2 + '|<a href="/deleteuser.html">Delete a user</a>|';
-                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
                 msg2 = msg2 + '<br/>';
                 //msg2 = msg2 + usersDisplayGenerator();
 
@@ -412,7 +436,7 @@ function menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname){
                 msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
                 msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
                 msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
-                msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+                //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
                 msg2 = msg2 + '<br/>';
                 //msg2 = msg2 + itemsDisplayGenerator();
             }
@@ -423,13 +447,13 @@ function menuGeneratorcheckout(pagename, req, res, pgloging, pgadmin, pgname){
             msg2 = msg2 + '|<a href="/createitem.html">create an item</a>|';
             msg2 = msg2 + '|<a href="/edititem.html">edit an item</a>|';
             msg2 = msg2 + '|<a href="/deleteitem.html">delete an item</a>|';
-            msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+            //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
             msg2 = msg2 + '<br/>';
             //msg2 = msg2 + itemsDisplayGenerator();
         }
     } else {
         msg2 = msg2 + '|<a href="/login.html">Login</a>||<a href="/registration.html">Register</a>||<a href="/aboutus.html">About Us</a>|';
-        msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
+        //msg2 = msg2 + '<a href="/checkout.html">|Checkout|</a><br/>';
         msg2 = msg2 + '<br/>';
         //msg2 = msg2 + itemsDisplayGenerator();
     }
@@ -1009,6 +1033,7 @@ app.get('/tocart', function(req, res) {
         theIndex = theCartItems.length;
         console.log("the index is " + theIndex);
         tmpvar = theItems[theItemNumber];
+        tmpvar.code = theItemNumber; //this make the item on the cart to remember its initial position in the db.
         console.log(tmpvar);
         //theCartItems[theIndex] = tmpvar; //need to fix the push here
         theCartItems[theIndex] = tmpvar;
