@@ -197,7 +197,7 @@ function cartItemsDisplayGenerator(){
         msg4 = msg4 + "<table><tr><th>Ord.No</th><th>Title</th><th>Description</th><th>Price</th></tr>";
         for(x=0; x<count; x++){
             //console.log("Checking user:" + theUsers[x].username);
-            theItemUrl = itemUrlGenerator(x);
+            theItemUrl = itemUrlGenerator(theCartItems[x].code);
             msg4 = msg4 + '<tr><td><a href="' + theItemUrl + '">' + x + '</a></td><td><a href="' + theItemUrl + '">' + theCartItems[x].name + '</a></td><td><a href="' + theItemUrl + '">' 
             + theCartItems[x].description +  '</a></td><td><a href="' + theItemUrl + '">'
             + theCartItems[x].price + '</a></td></tr>';
@@ -1009,6 +1009,7 @@ app.get('/tocart', function(req, res) {
         theIndex = theCartItems.length;
         console.log("the index is " + theIndex);
         tmpvar = theItems[theItemNumber];
+        tmpvar.code = theItemNumber; //this make the item on the cart to remember its initial position in the db.
         console.log(tmpvar);
         //theCartItems[theIndex] = tmpvar; //need to fix the push here
         theCartItems[theIndex] = tmpvar;
