@@ -2157,10 +2157,10 @@ app.listen(process.env.PORT || 3000);
 //================ MySQL Connection ===============================
 //Don't forget the require('mysql'); in the beginning.
 const dbcon = mysql.createConnection({
-	host: "den1.mysql5.gear.host",
-	user: "xtracker",
-	password: "yolo123!",
-	database: "xtracker"
+	host: "*******",
+	user: "*******",
+	password: "*******",
+	database: "*******"
 	});
 	
 	
