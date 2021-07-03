@@ -4,6 +4,8 @@
 
 # About Bonline
 
+Based on: https://github.com/Exarchias/bonline 
+
 <!--`this is a paragraph` -->
 
 `The idea is to create a web page where people can buy clothing and accessories online. Online, you can currently find many different clothing brands and options for virtually anything that’s able to be transported through a courier system. However, there are some developing countries that haven’t adapted to the current era of online shopping. Our project plan is to target these developing areas, as there is an untapped market for online shopping that can be made comprehensible and reliable. One of the project group members is from a country that can benefit from such a marketplace. Their family owns a clothing business and could highly benefit from a cloth shopping website such as our project. This project is not only intended for the completion of this course, but to be developed into commercial use in the future. `
