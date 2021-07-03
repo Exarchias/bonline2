@@ -1,7 +1,4 @@
 # Bonline
-## Important information
-The Heroku link:
-https://bonline2secrettest.herokuapp.com
 
 ![example picture](https://images-na.ssl-images-amazon.com/images/I/712iPqGUc4L._AC_UX385_.jpg)
 
