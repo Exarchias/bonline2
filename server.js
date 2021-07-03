@@ -2284,7 +2284,7 @@ function sendMessagesRecivedFromClientsToAdmin(subject,message){
         service: 'gmail',
         auth: {
           user: 'bonlinecloud@gmail.com',
-          pass: 'Bonline2021'
+          pass: '*******'
         }
       });
 
